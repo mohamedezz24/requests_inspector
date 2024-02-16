@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:shake/shake.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../requests_inspector.dart';
@@ -38,19 +37,12 @@ class InspectorController extends ChangeNotifier {
         _showInspectorOn = showInspectorOn,
         _onStoppingRequest = onStoppingRequest,
         _onStoppingResponse = onStoppingResponse,
-        _enableExpandableJsonView = enableExpandableJsonView {
-    if (_enabled && _allowShaking)
-      _shakeDetector = ShakeDetector.autoStart(
-        onPhoneShake: showInspector,
-        minimumShakeCount: 3,
-      );
-  }
+        _enableExpandableJsonView = enableExpandableJsonView;
 
   static InspectorController? _singleton;
 
   late final bool _enabled;
   late final ShowInspectorOn _showInspectorOn;
-  late final ShakeDetector _shakeDetector;
   StoppingRequestCallback? _onStoppingRequest;
   StoppingResponseCallback? _onStoppingResponse;
 
@@ -170,11 +162,7 @@ class InspectorController extends ChangeNotifier {
     );
   }
 
-  @override
-  void dispose() {
-    if (_allowShaking) _shakeDetector.stopListening();
-    super.dispose();
-  }
+  
 
   String _formatMap(Map<String, dynamic> requestMap) {
     final converter = JsonPrettyConverter();
